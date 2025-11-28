@@ -83,11 +83,7 @@ async function searchKeyword(keyword) {
     keyword
   )}&restrict_sr=0&type=link&sort=relevance&t=month&limit=6`;
 
-  const response = await fetch(url, {
-    headers: {
-      "User-Agent": "Viably/1.0 (by /u/yourusername)",
-    },
-  });
+  const response = await fetch(url);
 
   if (!response.ok)
     throw new Error(
