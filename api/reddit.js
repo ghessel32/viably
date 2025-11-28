@@ -1,6 +1,7 @@
 // api/reddit.js
-const CLIENT_ID = "EPITMBPw35Z1GM81NPDdTQ";
-const CLIENT_SECRET = "z-ee1qotTn9QDcFyEGx8-Ugm3e66_A";
+const CLIENT_ID = process.env.VITE_REDDIT_CLIENT_ID;
+const CLIENT_SECRET = process.env.VITE_REDDIT_CLIENT_SECRET;
+
 
 let cachedToken = null;
 let tokenExpiry = 0;

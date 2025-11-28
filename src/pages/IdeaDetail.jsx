@@ -266,6 +266,7 @@ export default function IdeaDetail() {
                   key={index}
                   className="bg-white rounded-xl p-5 border border-slate-200
              hover:border-[#2DD4BF] hover:shadow-md transition-all cursor-pointer w-full"
+                  onClick={() => window.open(post.url, "_blank")}
                 >
                   <h1
                     className="text-lg font-semibold mb-2 line-clamp-3

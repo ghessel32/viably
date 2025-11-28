@@ -40,6 +40,7 @@ function RedditTalks({ onClose }) {
               <div
                 className="w-[90%] bg-white rounded-lg p-5 group hover:outline-1 outline-[#2DD4BF] hover:shadow-lg transition-all cursor-pointer"
                 key={index}
+                onClick={() => window.open(post.url, "_blank")}
               >
                 <h1 className="text-lg font-medium mb-2 group-hover:text-[#2DD4BF]">
                   {post.title}
