@@ -19,34 +19,22 @@ export default async function handler(req, res) {
     limit: limit || "6"
   });
 
-  const REQ_TIMEOUT = 7000;
-  const controller = new AbortController();
-  setTimeout(() => controller.abort(), REQ_TIMEOUT);
-
   const url = `https://www.reddit.com/search.json?${params}`;
-
-  // --- Production-safe headers ---
-  const headers = {
-    "User-Agent": "ViablyBot/1.0 by u/FlowerSoft297",
-    "Accept": "application/json"
-  };
-
-  // --- CDN cache for Reddit ---
-  res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate");
 
   try {
     const response = await fetch(url, {
-      headers,
-      signal: controller.signal
+      headers: {
+        "User-Agent": "ViablyBot/1.0 by RahulParjapat",
+        "Accept": "application/json"
+      }
     });
 
     const text = await response.text();
 
     if (!response.ok) {
       return res.status(response.status).json({
-        source: "reddit",
-        status: response.status,
-        body: text
+        redditStatus: response.status,
+        redditBody: text
       });
     }
 
@@ -55,7 +43,7 @@ export default async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({
       stage: "server",
-      error: err.name === "AbortError" ? "timeout" : err.message
+      error: err.message
     });
   }
 }
