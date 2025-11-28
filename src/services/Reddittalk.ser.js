@@ -79,23 +79,19 @@ ${rawIdea}`;
 // Reddit Search (no auth)
 
 async function searchKeyword(keyword) {
-  const params = new URLSearchParams({
-    q: keyword,
-    restrict_sr: "0",
-    type: "link",
-    sort: "relevance",
-    t: "month",
-    limit: "6",
-  });
-
-  const url = `/api/reddit?${params}`;
+  const url = `/api/reddit?q=${encodeURIComponent(
+    keyword
+  )}&restrict_sr=0&type=link&sort=relevance&t=month&limit=6`;
 
   try {
     const response = await fetch(url);
-
     if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+
       throw new Error(
-        `Reddit search failed: ${response.status} ${response.statusText}`
+        errorData?.redditError ||
+          errorData?.error ||
+          `Reddit failed with ${response.status}`
       );
     }
 
