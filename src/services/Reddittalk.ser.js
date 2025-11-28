@@ -79,7 +79,7 @@ ${rawIdea}`;
 // Reddit Search (no auth)
 
 async function searchKeyword(keyword) {
-  const url = `/reddit/search/?q=${encodeURIComponent(
+  const url = `https://api.reddit.com/search/?q=${encodeURIComponent(
     keyword
   )}&restrict_sr=0&type=link&sort=relevance&t=month&limit=6`;
 
