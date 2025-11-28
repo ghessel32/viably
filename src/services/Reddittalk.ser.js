@@ -79,30 +79,44 @@ ${rawIdea}`;
 // Reddit Search (no auth)
 
 async function searchKeyword(keyword) {
-  const url = `https://api.reddit.com/search/?q=${encodeURIComponent(
-    keyword
-  )}&restrict_sr=0&type=link&sort=relevance&t=month&limit=6`;
-
-  const response = await fetch(url);
-
-  if (!response.ok)
-    throw new Error(
-      `Reddit search failed: ${response.status} ${response.statusText}`
-    );
-
-  const data = await response.json();
-  const posts = data.data?.children || [];
-
-  return posts.map((p) => {
-    const d = p.data;
-    return {
-      title: d.title,
-      subreddit: `r/${d.subreddit}`,
-      url: `https://reddit.com${d.permalink}`,
-      timeAgo: timeAgo(d.created_utc),
-      content: d.selftext || "",
-    };
+  const params = new URLSearchParams({
+    q: keyword,
+    restrict_sr: "0",
+    type: "link",
+    sort: "relevance",
+    t: "month",
+    limit: "6",
   });
+
+  const url = `/api/reddit?${params}`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(
+        `Reddit search failed: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+
+    const posts = data.data?.children || [];
+
+    return posts.map((p) => {
+      const d = p.data;
+      return {
+        title: d.title,
+        subreddit: `r/${d.subreddit}`,
+        url: `https://reddit.com${d.permalink}`,
+        timeAgo: timeAgo(d.created_utc),
+        content: d.selftext || "",
+      };
+    });
+  } catch (error) {
+    console.error("Error searching keyword:", error);
+    throw error;
+  }
 }
 
 // Search all keywords
